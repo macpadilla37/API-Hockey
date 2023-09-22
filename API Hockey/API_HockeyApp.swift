@@ -11,7 +11,7 @@ import SwiftUI
 struct API_HockeyApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TeamsView()
         }
     }
 }
