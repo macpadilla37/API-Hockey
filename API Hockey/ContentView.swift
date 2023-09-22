@@ -31,7 +31,7 @@ struct TeamsView: View {
         do {
             isLoading = true
             
-            let url = URL(string: "https://run.mocky.io/v3/c63cc6a0-bcfc-49d6-ba3d-7a1331e9f1a2")!
+            let url = URL(string: "https://run.mocky.io/v3/3c4f07b8-2d8b-4c20-9fb4-812b2438768c")!
             let (data, _) = try await URLSession.shared.data(from: url)
             
             NHL = try JSONDecoder().decode(NationalHockeyLeague.self, from: data).teams
@@ -45,7 +45,7 @@ struct TeamsView: View {
             List(NHL) { team in
                 VStack(alignment: .leading) {
                     Button(team.name){
-                                        showingSheet = true
+                            showingSheet = true
                                     }
                                     .sheet(isPresented: $showingSheet) {
                                         SheetView()
@@ -69,14 +69,13 @@ struct TeamView_Previews: PreviewProvider {
 struct SheetView: View {
     @State var NHL =  [Team]()
     @State var isLoading = false
-    @State private var selectedTeamIndex = 0
     @Environment(\.dismiss) var dismiss
     
     func getAllTeams() async {
         do {
             isLoading = true
             
-            let url = URL(string: "https://run.mocky.io/v3/c63cc6a0-bcfc-49d6-ba3d-7a1331e9f1a2")!
+            let url = URL(string: "https://run.mocky.io/v3/3c4f07b8-2d8b-4c20-9fb4-812b2438768c")!
             let (data, _) = try await URLSession.shared.data(from: url)
             
             NHL = try JSONDecoder().decode(NationalHockeyLeague.self, from: data).teams
@@ -88,10 +87,12 @@ struct SheetView: View {
     
     var body: some View {
         NavigationView {
-            VStack(alignment: .leading) {
-                Text("Abbreviation: \(NHL.first?.abbreviation ?? "")")
-                Text("City: \(NHL.first?.city ?? "")")
-            }
+            List(NHL) { team in
+                VStack(alignment: .leading) {
+                    Text(team.abbreviation)
+                    Text(team.city)
+                }
+                }
             .task {
                 await getAllTeams()
             }
